@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Photo Store",
+  title: "CityMeet-test",
 };
 
 export default function RootLayout({ children }) {
