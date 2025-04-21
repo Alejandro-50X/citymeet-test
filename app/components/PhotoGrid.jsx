@@ -1,8 +1,9 @@
-import { supabaseServer } from "../utils/supabaseServerClient"
 import Photo from "./Photo";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
 
-async function fetchUserPhotos(user){
+async function fetchUserPhotos(user, supabaseServer){
     if (!user) return;
 
     const folderPath = `user_uploads/${user.id}/`
@@ -17,7 +18,7 @@ async function fetchUserPhotos(user){
     return data;
 }
 
-async function getPhotoUrls(photos, user){
+async function getPhotoUrls(photos, user, supabaseServer){
     return Promise.all(photos.map(async (photo) => {
         const {data, error} = await supabaseServer.storage
             .from('photos')
@@ -30,7 +31,7 @@ async function getPhotoUrls(photos, user){
     }))
 }
 
-async function fetchFavoritePhotos(user){
+async function fetchFavoritePhotos(user, supabaseServer){
     const {data, error} = await supabaseServer
         .from('favorites')
         .select('photo_name')
@@ -45,10 +46,24 @@ async function fetchFavoritePhotos(user){
 
 export default async function PhotoGrid({favorites = false}){
 
+    const cookieStore = cookies();
+    const supabaseServer = createServerClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+            {
+                cookies: {
+                    get(name){
+                        return cookieStore.get(name)?.value
+                    }
+                }
+            }
+    
+        )
+
     const {data: {user}} = await supabaseServer.auth.getUser()
     const photos = await fetchUserPhotos(user, supabaseServer)
     const photoObjects = await getPhotoUrls(photos, user, supabaseServer);
-    const favoritePhotoNames = await fetchFavoritePhotos(user);
+    const favoritePhotoNames = await fetchFavoritePhotos(user, supabaseServer);
 
     const photosWithFavorites = photoObjects.map((photo) => ({
         ...photo,
