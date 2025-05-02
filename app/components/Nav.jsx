@@ -15,6 +15,11 @@ export default function Nav(){
                         Favorites
                     </Link>
                 </li>
+                <li>
+                <Link href="/profile" className="text-gray-300 hover:text-gray-100">
+                        Profile
+                    </Link>
+                </li>
             </ul>
         </nav>
     )
