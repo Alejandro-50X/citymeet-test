@@ -1,0 +1,93 @@
+'use client';
+import { useEffect } from 'react';
+import './resources.css';
+import Nav from '../components/Nav';
+import SignOutButton from '../components/SignOutButton';
+
+export default function ResourcesPage() {
+  useEffect(() => {
+    const questions = document.querySelectorAll('.faq-question');
+    questions.forEach((q) => {
+      q.addEventListener('click', () => {
+        const answer = q.nextElementSibling;
+        if (answer) {
+          answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+        }
+      });
+    });
+
+    return () => {
+      questions.forEach((q) => {
+        q.replaceWith(q.cloneNode(true));
+      });
+    };
+  }, []);
+
+  return (
+    <main className="min-h-screen bg-gray-800 text-white relative p-10">
+      <Nav />
+      <div className="absolute top-4 right-4">
+        <SignOutButton />
+      </div>
+
+      <div className="container mx-auto px-4 py-24">
+        <div className="top-banner">CityMeet</div>
+        <div className="resources-tab">
+          <h1>Resources</h1>
+
+          <h2>Helpful Links</h2>
+          <ul>
+            
+            <li><a href="community_forum.html" target="_blank">Community Forum/Feedback</a></li>
+            <li><a href="https://www.governmentjobs.com/careers/LACOUNTY" target="_blank">LA County Job Opportunities</a></li>
+            <li><a href="https://www.lafoodbank.org/programs/rapid-food-distribution" target="_blank">LA County Food Drive</a></li>
+            <li><a href="https://example.com/Support" target="_blank">Support & Help</a></li>
+          </ul>
+
+          <h2>FAQ</h2>
+          <div className="faq-item">
+            <div className="faq-question">How do I make a new post?</div>
+            <div className="faq-answer">To upload a post,....</div>
+          </div>
+          <div className="faq-item">
+            <div className="faq-question">How do I change my location preferences?</div>
+            <div className="faq-answer">To change your location preferences,....</div>
+          </div>
+          <div className="faq-item">
+            <div className="faq-question">How do I add people to my followers/Friends list?</div>
+            <div className="faq-answer">To add a friend,....</div>
+          </div>
+          <div className="faq-item">
+            <div className="faq-question">How do I upload my resume to my account?</div>
+            <div className="faq-answer">To upload a resume,....</div>
+          </div>
+          <div className="faq-item">
+            <div className="faq-question">How do I report a post?</div>
+            <div className="faq-answer">Above a user's post, click the 3 dots and select "Report Post"</div>
+          </div>
+
+          <h2>Customer Support</h2>
+          <form className="contact-form">
+            <div className="form-group">
+              <label>Name:</label>
+              <input type="text" name="name" required />
+            </div>
+            <div className="form-group">
+              <label>Email:</label>
+              <input type="email" name="email" required />
+            </div>
+            <div className="form-group">
+              <label>Postal Code:</label>
+              <input type="text" name="postalCode" />
+            </div>
+            <div className="form-group">
+              <label>Message:</label>
+              <textarea name="message" rows="7" required />
+            </div>
+            <button type="submit">Send</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  );
+}

@@ -20,6 +20,11 @@ export default function Nav(){
                         Profile
                     </Link>
                 </li>
+                <li>
+                    <Link href="/resources" className="text-gray-300 hover:text-gray-100">
+                        Resources
+                    </Link>
+                </li>
             </ul>
         </nav>
     )
