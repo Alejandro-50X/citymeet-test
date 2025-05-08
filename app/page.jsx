@@ -2,6 +2,7 @@ import Image from "next/image";
 import AuthForm from "./components/AuthForm";
 
 
+
 export default function Home() {
   return (
     <main className="flex items-center justify-center bg-gray-900 min-h-screen">
