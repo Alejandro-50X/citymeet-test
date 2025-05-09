@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from 'react';
+import Link from 'next/link';
 
 export default function CityMap() {
   const mapRef = useRef(null);
@@ -462,8 +463,17 @@ export default function CityMap() {
         return;
       }
       
+      // Get the API key from environment variables
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+      
+      if (!apiKey) {
+        console.error('GOOGLE_MAPS_API_KEY is not defined in environment variables');
+        setStatus("Error: Maps API configuration issue");
+        return;
+      }
+      
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDmZPHOFE3FuFd3FrDb6pbA5faXNZ6PK54&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
       script.async = true;
       script.defer = true;
       script.onload = () => {
@@ -493,9 +503,13 @@ export default function CityMap() {
     <div className="flex h-screen flex-col">
       {/* Top search bar - Google Maps style */}
       <div className="flex items-center p-4 bg-white shadow-md z-10">
-        <div className="mr-4">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Font_Awesome_5_solid_map-marker-alt.svg" alt="Map Icon" className="h-6 w-6 text-green-700" />
-        </div>
+        <Link href="/landingpage" className="flex items-center mr-4 cursor-pointer hover:opacity-80 transition-opacity">
+          <div className="h-8 w-8 bg-green-800 flex items-center justify-center text-white rounded-sm mr-2">
+            <span>CM</span>
+          </div>
+          <span className="text-green-800 font-semibold text-lg">CityMeet</span>
+        </Link>
+        
         <form onSubmit={handleSearch} className="flex-grow flex">
           <div className="relative flex-grow">
             <input
@@ -665,159 +679,158 @@ export default function CityMap() {
                 </div>
               )}
             </div>
-          ) : (
-            <div className="flex-1 p-4 overflow-auto">
-              {/* Resource filters */}
-              <div className="space-y-3 mb-6">
-                <button 
-                  className={`w-full py-3 px-4 ${isGoogleMapsLoaded ? 'bg-green-700 hover:bg-green-800' : 'bg-gray-400'} text-white font-medium rounded-md flex items-center justify-center transition`}
-                  onClick={() => {
-                    console.log('Homeless Shelters button clicked');
-                    filterPlacesByText('homeless shelters in Los Angeles');
-                  }}
-                  disabled={!isGoogleMapsLoaded}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
-                  </svg>
-                  Homeless Shelters
-                </button>
-                
-                <button 
-                  className={`w-full py-3 px-4 ${isGoogleMapsLoaded ? 'bg-green-700 hover:bg-green-800' : 'bg-gray-400'} text-white font-medium rounded-md flex items-center justify-center transition`}
-                  onClick={() => {
-                    console.log('Food Centers button clicked');
-                    filterPlacesByText('food banks in Los Angeles');
-                  }}
-                  disabled={!isGoogleMapsLoaded}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892A1 1 0 006 12h7a1 1 0 000-2H7.414l.893-.892L9.525 6h2.473a1 1 0 00.986-.832l.682-3.41a1 1 0 00-.984-1.168H3z" />
-                    <path d="M12 13a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                  Food Centers
-                </button>
-                
-                <button 
-                  className={`w-full py-3 px-4 ${isGoogleMapsLoaded ? 'bg-green-700 hover:bg-green-800' : 'bg-gray-400'} text-white font-medium rounded-md flex items-center justify-center transition`}
-                  onClick={() => {
-                    console.log('Medical Services button clicked');
-                    filterPlacesByType('hospital');
-                  }}
-                  disabled={!isGoogleMapsLoaded}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M3 6a3 3 0 013-3h8a3 3 0 013 3v8a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm4 1a1 1 0 10-2 0v2a1 1 0 102 0V7zm4 0a1 1 0 10-2 0v6a1 1 0 102 0V7zm4 0a1 1 0 10-2 0v2a1 1 0 102 0V7z" clipRule="evenodd" />
-                  </svg>
-                  Medical Services
-                </button>
-                
-                <button 
-                  className={`w-full py-3 px-4 ${isGoogleMapsLoaded ? 'bg-green-700 hover:bg-green-800' : 'bg-gray-400'} text-white font-medium rounded-md flex items-center justify-center transition`}
-                  onClick={() => {
-                    console.log('Employment Services button clicked');
-                    filterPlacesByText('employment services in Los Angeles');
-                  }}
-                  disabled={!isGoogleMapsLoaded}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd" />
-                    <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
-                  </svg>
-                  Employment Services
-                </button>
-                
-                <button 
-                  className={`w-full py-3 px-4 ${isGoogleMapsLoaded ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400'} text-white font-medium rounded-md flex items-center justify-center transition`}
-                  onClick={() => {
-                    setActivePanel('directions');
-                    // Try to get user location for origin
-                    if (navigator.geolocation && originInputRef.current) {
-                      navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                          const geocoder = new google.maps.Geocoder();
-                          geocoder.geocode(
-                            { location: { lat: position.coords.latitude, lng: position.coords.longitude } },
-                            (results, status) => {
-                              if (status === 'OK' && results[0]) {
-                                originInputRef.current.value = results[0].formatted_address;
-                              } else {
-                                originInputRef.current.value = "My location";
-                              }
+          ) : (<div className="flex-1 p-4 overflow-auto">
+            {/* Resource filters */}
+            <div className="space-y-3 mb-6">
+              <button 
+                className={`w-full py-3 px-4 ${isGoogleMapsLoaded ? 'bg-green-700 hover:bg-green-800' : 'bg-gray-400'} text-white font-medium rounded-md flex items-center justify-center transition`}
+                onClick={() => {
+                  console.log('Homeless Shelters button clicked');
+                  filterPlacesByText('homeless shelters in Los Angeles');
+                }}
+                disabled={!isGoogleMapsLoaded}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
+                </svg>
+                Homeless Shelters
+              </button>
+              
+              <button 
+                className={`w-full py-3 px-4 ${isGoogleMapsLoaded ? 'bg-green-700 hover:bg-green-800' : 'bg-gray-400'} text-white font-medium rounded-md flex items-center justify-center transition`}
+                onClick={() => {
+                  console.log('Food Centers button clicked');
+                  filterPlacesByText('food banks in Los Angeles');
+                }}
+                disabled={!isGoogleMapsLoaded}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892A1 1 0 006 12h7a1 1 0 000-2H7.414l.893-.892L9.525 6h2.473a1 1 0 00.986-.832l.682-3.41a1 1 0 00-.984-1.168H3z" />
+                  <path d="M12 13a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Food Centers
+              </button>
+              
+              <button 
+                className={`w-full py-3 px-4 ${isGoogleMapsLoaded ? 'bg-green-700 hover:bg-green-800' : 'bg-gray-400'} text-white font-medium rounded-md flex items-center justify-center transition`}
+                onClick={() => {
+                  console.log('Medical Services button clicked');
+                  filterPlacesByType('hospital');
+                }}
+                disabled={!isGoogleMapsLoaded}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M3 6a3 3 0 013-3h8a3 3 0 013 3v8a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm4 1a1 1 0 10-2 0v2a1 1 0 102 0V7zm4 0a1 1 0 10-2 0v6a1 1 0 102 0V7zm4 0a1 1 0 10-2 0v2a1 1 0 102 0V7z" clipRule="evenodd" />
+                </svg>
+                Medical Services
+              </button>
+              
+              <button 
+                className={`w-full py-3 px-4 ${isGoogleMapsLoaded ? 'bg-green-700 hover:bg-green-800' : 'bg-gray-400'} text-white font-medium rounded-md flex items-center justify-center transition`}
+                onClick={() => {
+                  console.log('Employment Services button clicked');
+                  filterPlacesByText('employment services in Los Angeles');
+                }}
+                disabled={!isGoogleMapsLoaded}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd" />
+                  <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
+                </svg>
+                Employment Services
+              </button>
+              
+              <button 
+                className={`w-full py-3 px-4 ${isGoogleMapsLoaded ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400'} text-white font-medium rounded-md flex items-center justify-center transition`}
+                onClick={() => {
+                  setActivePanel('directions');
+                  // Try to get user location for origin
+                  if (navigator.geolocation && originInputRef.current) {
+                    navigator.geolocation.getCurrentPosition(
+                      (position) => {
+                        const geocoder = new google.maps.Geocoder();
+                        geocoder.geocode(
+                          { location: { lat: position.coords.latitude, lng: position.coords.longitude } },
+                          (results, status) => {
+                            if (status === 'OK' && results[0]) {
+                              originInputRef.current.value = results[0].formatted_address;
+                            } else {
+                              originInputRef.current.value = "My location";
                             }
-                          );
-                        },
-                        (error) => {
-                          console.error('Error getting location: ', error);
-                        }
-                      );
-                    }
-                  }}
-                  disabled={!isGoogleMapsLoaded}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                  </svg>
-                  Get Directions
-                </button>
-              </div>
-              
-              <div className="bg-gray-50 p-4 rounded-md mb-6">
-                <h3 className="text-lg font-medium mb-3 text-green-700">Information</h3>
-                <p className="text-gray-700 mb-2">
-                  This map shows welfare resources and community services available in Los Angeles. Use the buttons above to filter for specific services.
-                </p>
-                <p className="text-sm text-gray-600">
-                  Status: {status}
-                </p>
-              </div>
-              
-              <div className="mt-6">
-                <h3 className="text-lg font-medium mb-3 text-green-700">How to Use</h3>
-                <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Click on the resource buttons to find services in your area</li>
-                  <li>Click on any marker to see details about that location</li>
-                  <li>Use the search bar to find specific locations</li>
-                  <li>Click "Get Directions" to plan your route</li>
-                  <li>Click on "Drive" or "Walk" in location info windows for quick directions</li>
-                </ul>
-              </div>
+                          }
+                        );
+                      },
+                      (error) => {
+                        console.error('Error getting location: ', error);
+                      }
+                    );
+                  }
+                }}
+                disabled={!isGoogleMapsLoaded}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                Get Directions
+              </button>
             </div>
-          )}
-        </div>
-        
-        {/* Mobile-only floating action buttons */}
-        {activePanel === 'map' && (
-          <div className="md:hidden absolute bottom-6 right-6 flex flex-col space-y-3">
-            <button 
-              onClick={() => setActivePanel('directions')}
-              className="h-14 w-14 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-              </svg>
-            </button>
             
-            <button 
-              onClick={() => window.location.href = '#filters'}
-              className="h-14 w-14 rounded-full bg-green-700 text-white flex items-center justify-center shadow-lg"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-              </svg>
-            </button>
+            <div className="bg-gray-50 p-4 rounded-md mb-6">
+              <h3 className="text-lg font-medium mb-3 text-green-700">Information</h3>
+              <p className="text-gray-700 mb-2">
+                This map shows welfare resources and community services available in Los Angeles. Use the buttons above to filter for specific services.
+              </p>
+              <p className="text-sm text-gray-600">
+                Status: {status}
+              </p>
+            </div>
+            
+            <div className="mt-6">
+              <h3 className="text-lg font-medium mb-3 text-green-700">How to Use</h3>
+              <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                <li>Click on the resource buttons to find services in your area</li>
+                <li>Click on any marker to see details about that location</li>
+                <li>Use the search bar to find specific locations</li>
+                <li>Click "Get Directions" to plan your route</li>
+                <li>Click on "Drive" or "Walk" in location info windows for quick directions</li>
+              </ul>
+            </div>
           </div>
         )}
       </div>
       
-      {/* Status bar - only visible when certain actions are happening */}
-      {status && status !== "Map loaded. Search for locations or use the resource filters." && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white py-2 px-4 shadow-md text-sm text-gray-700 flex items-center z-30">
-          <div className="mr-2 h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
-          {status}
+      {/* Mobile-only floating action buttons */}
+      {activePanel === 'map' && (
+        <div className="md:hidden absolute bottom-6 right-6 flex flex-col space-y-3">
+          <button 
+            onClick={() => setActivePanel('directions')}
+            className="h-14 w-14 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+          </button>
+          
+          <button 
+            onClick={() => window.location.href = '#filters'}
+            className="h-14 w-14 rounded-full bg-green-700 text-white flex items-center justify-center shadow-lg"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+          </button>
         </div>
       )}
     </div>
-  );
+    
+    {/* Status bar - only visible when certain actions are happening */}
+    {status && status !== "Map loaded. Search for locations or use the resource filters." && (
+      <div className="fixed bottom-0 left-0 right-0 bg-white py-2 px-4 shadow-md text-sm text-gray-700 flex items-center z-30">
+        <div className="mr-2 h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+        {status}
+      </div>
+    )}
+  </div>
+);
 }

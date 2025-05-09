@@ -30,8 +30,16 @@ const NewsSection = () => {
     };
     
     try {
+      // Using environment variable for API key
+      const apiKey = process.env.NEXT_PUBLIC_NEWS_API_KEY;
+      
+      if (!apiKey) {
+        console.error('NEWS_API_KEY is not defined in environment variables');
+        throw new Error('API configuration error');
+      }
+      
       const response = await fetch(
-        `https://newsapi.org/v2/everything?q=${queryMap[category]}&apiKey=9cbcdd36e60648878547cf8957fe087b&pageSize=10`
+        `https://newsapi.org/v2/everything?q=${queryMap[category]}&apiKey=${apiKey}&pageSize=10`
       );
       
       if (!response.ok) {
