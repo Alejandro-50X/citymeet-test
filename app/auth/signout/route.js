@@ -29,6 +29,9 @@ export async function POST(req){
 
     if (session){
         await supabase.auth.signOut()
+
+        cookieStore.remove('sb-access-token');
+        cookieStore.remove('sb-refresh-token');
     }
 
     return NextResponse.redirect(new URL('/', req.url), {
