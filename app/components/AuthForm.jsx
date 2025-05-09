@@ -4,27 +4,37 @@ import { useState } from "react"
 import { supabase } from "../utils/supabaseClient"
 import { useRouter } from "next/navigation"
 
+
+
 export default function AuthForm(){
     const [isNewUser, setIsNewUser] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isSigningIn, setIsSigningIn] = useState(false)
     const [isSigningUp, setIsSigningUp] = useState(false)
+    const [is2FARequired, setIs2FARequired] = useState(false)
+    const [otpSent, setOtpSent] = useState(false)
+    const [emailSent, setEmailSent] = useState(false)
+    const [otp, setOtp] = useState('')
     const router = useRouter()
 
-    async function handleLogin(e){
-        e.preventDefault();
-        setIsSigningIn(true)
-        const {data, error} = await supabase.auth.signInWithPassword({
-            email, password
-        })
-        console.log({error, data})
-        if (!error){
-            router.push('/photos')
-        } else {
-            setIsSigningIn(false)
-        }
-    }
+
+async function handleLogin(e) {
+  e.preventDefault()
+  setIsSigningIn(true)
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email
+  })
+
+  if (!error) {
+    setEmailSent(true)
+  } else {
+    console.log('Login error:', error.message)
+  }
+
+  setIsSigningIn(false)
+}
 
     async function handleSignUp(e){
         e.preventDefault();
@@ -48,7 +58,13 @@ export default function AuthForm(){
 
     const signUpMessage = <p className="text-center text-white">Email sent! Check your email to confirm sign up.</p>
 
-    return (
+return (
+    <>
+    {emailSent ? (
+      <p className="text-center text-white">
+        A login link has been sent to your email. Please check your inbox to complete the login.
+      </p>
+    ) : (
         <form onSubmit={isNewUser ? handleSignUp : handleLogin} className="space-y-8">
             <input
                 type="email"
@@ -66,7 +82,7 @@ export default function AuthForm(){
             />
             <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
             >
                 {signInMessage}
             </button>
@@ -97,5 +113,8 @@ export default function AuthForm(){
             </p>
             {isSigningUp && signUpMessage}
         </form>
-  );
+    )}
+    </>
+)
+
 }
