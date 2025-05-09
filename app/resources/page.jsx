@@ -2,12 +2,14 @@
 import { useEffect } from 'react';
 import { supabase } from "../utils/supabaseClient"
 import './resources.css';
-
 import Nav from '../components/Nav';
 import SignOutButton from '../components/SignOutButton';
 
 export default function ResourcesPage() {
-
+  /*
+  The handleSubmit function is used to process the Customer
+  Support data and message submisson
+  */
   async function handleSubmit(e) {
     e.preventDefault();
   
@@ -19,7 +21,7 @@ export default function ResourcesPage() {
     const message = formData.get('message');
   
     console.log('Form submitted!', { name, email, postalCode, message });
-  
+  //links to the supabase data table "Customer_Support_Messages"
     const { data, error } = await supabase.from('Customer_Support_Messages').insert([
       {
         name,
@@ -37,11 +39,10 @@ export default function ResourcesPage() {
       e.target.reset();
     }
   }
-  
-
-    
-  
-
+  /*
+  This block of code is used to reveal an answer to a FAQ once 
+  clicked upon
+  */
   useEffect(() => {
     const questions = document.querySelectorAll('.faq-question');
     questions.forEach((q) => {
@@ -71,13 +72,13 @@ export default function ResourcesPage() {
       <div className="top-banner">Resources</div> 
         <div className="resources-tab">
           
-
           <h2>Helpful Links</h2>
           <ul>
-            
             <li><a href="https://dpss.lacounty.gov/en.html" target="_blank">Department of Public Social Services</a></li>
             <li><a href="https://www.governmentjobs.com/careers/LACOUNTY" target="_blank">LA County Job Opportunities</a></li>
             <li><a href="https://www.lafoodbank.org/programs/rapid-food-distribution" target="_blank">LA County Food Drive</a></li>
+            <li><a href="https://www.lahsa.org/portal/apps/find-a-shelter/adults" target="_blank">Los Angeles Homeless Services Authority</a></li>
+            <li><a href="https://dmh.lacounty.gov/acr/?utm_source=Google&utm_medium=Search&utm_id=ACR&gad_source=1&gad_campaignid=22299664288&gbraid=0AAAAAqpP-DH5K6RpQyuXcNMeJMetdpun4&gclid=CjwKCAjwz_bABhAGEiwAm-P8YXey1-uutP2lGHtfjradNsmuy4EDnavQvvEnFi-mTawBjO0Y5o8h0RoCXQcQAvD_BwE" target="_blank">Department of Mental Health</a></li>
             <li><a href="https://211la.org/resources" target="_blank">Additional Resources</a></li>
           </ul>
 
