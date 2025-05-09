@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 40px;
+    margin: 40;
   }
   
   .resources-tab {
@@ -8,24 +8,27 @@ body {
     margin: auto;
   }
   .top-banner {
-      background-color: green;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 4em;
-      font-weight: bold;
+    background-color: #043917; /* Tailwind's green-600 */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
+    border-radius: 8px;
+    margin-bottom: 2rem;
   }
+  
   
   h1 {
       text-align: center;
       font-size: 3.5em;
-      color: rgb(7, 141, 41);
+      color: #043917;
       margin-bottom: 40px;
   }
   
   h2 {
     font-size: 2.5em;
-    border-bottom: 2px solid rgb(40, 150, 12);
+    border-bottom: 2px solid rgb(15, 46, 7);
     padding-bottom: 5px;
   }
   
@@ -50,7 +53,11 @@ body {
   }
   
   .contact-form {
-    margin-top: 20px;
+    margin-top: 30px;
+    background-color: #111827; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
   
   .contact-form input,
@@ -59,24 +66,41 @@ body {
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 10px;
+    border: 2px solid #043917;
+    border-radius: 4px;
+    font-size: 1em;
+    resize: vertical;
+    background-color: #090909;
   }
   
   .contact-form button {
-    padding: 10px 20px;
+    background-color: #043917;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .contact-form button:hover {
+    background-color: #043917;
   }
   .contact-form textarea {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 10px;
-    border: 2px solid #4CAF50; /* Green border */
-    border-radius: 4px;         
+    border: 2px solid #043917; /* Green border */
+    border-radius: 4px; 
+    background-color: #090909;        
   }
   .form-group {
-    border: 2px solid #4CAF50;
+    border: 2px solid #043917;
     border-radius: 6px;
     padding: 10px;
     margin-bottom: 15px;
+
   }
   
   

@@ -75,7 +75,7 @@ export default function ResourcesPage() {
           <h2>Helpful Links</h2>
           <ul>
             
-            <li><a href="https://dpss.lacounty.gov/en.html" target="_blank">Department of Public Social Seevices</a></li>
+            <li><a href="https://dpss.lacounty.gov/en.html" target="_blank">Department of Public Social Services</a></li>
             <li><a href="https://www.governmentjobs.com/careers/LACOUNTY" target="_blank">LA County Job Opportunities</a></li>
             <li><a href="https://www.lafoodbank.org/programs/rapid-food-distribution" target="_blank">LA County Food Drive</a></li>
             <li><a href="https://211la.org/resources" target="_blank">Additional Resources</a></li>
