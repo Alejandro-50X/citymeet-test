@@ -1,10 +1,47 @@
 'use client';
 import { useEffect } from 'react';
+import { supabase } from "../utils/supabaseClient"
 import './resources.css';
+
 import Nav from '../components/Nav';
 import SignOutButton from '../components/SignOutButton';
 
 export default function ResourcesPage() {
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+  
+    const formData = new FormData(e.target);
+  
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const postalCode = formData.get('postalCode');
+    const message = formData.get('message');
+  
+    console.log('Form submitted!', { name, email, postalCode, message });
+  
+    const { data, error } = await supabase.from('Customer_Support_Messages').insert([
+      {
+        name,
+        email,
+        postal_code: postalCode,
+        messages: message,
+      },
+    ]);
+  
+    if (error) {
+      console.error(error);
+      alert('There was an error submitting your message.');
+    } else {
+      alert('Thank you! Your message has been received.');
+      e.target.reset();
+    }
+  }
+  
+
+    
+  
+
   useEffect(() => {
     const questions = document.querySelectorAll('.faq-question');
     questions.forEach((q) => {
@@ -31,17 +68,17 @@ export default function ResourcesPage() {
       </div>
 
       <div className="container mx-auto px-4 py-24">
-        <div className="top-banner">CityMeet</div>
+      <div className="top-banner">Resources</div> 
         <div className="resources-tab">
-          <h1>Resources</h1>
+          
 
           <h2>Helpful Links</h2>
           <ul>
             
-            <li><a href="community_forum.html" target="_blank">Community Forum/Feedback</a></li>
+            <li><a href="https://dpss.lacounty.gov/en.html" target="_blank">Department of Public Social Seevices</a></li>
             <li><a href="https://www.governmentjobs.com/careers/LACOUNTY" target="_blank">LA County Job Opportunities</a></li>
             <li><a href="https://www.lafoodbank.org/programs/rapid-food-distribution" target="_blank">LA County Food Drive</a></li>
-            <li><a href="https://example.com/Support" target="_blank">Support & Help</a></li>
+            <li><a href="https://211la.org/resources" target="_blank">Additional Resources</a></li>
           </ul>
 
           <h2>FAQ</h2>
@@ -67,7 +104,7 @@ export default function ResourcesPage() {
           </div>
 
           <h2>Customer Support</h2>
-          <form className="contact-form">
+          <form className="contact-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Name:</label>
               <input type="text" name="name" required />
