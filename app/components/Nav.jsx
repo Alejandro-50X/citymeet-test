@@ -8,11 +8,13 @@ export default function Nav() {
         <div className="max-w-screen-xl mx-auto">
           {/* Upper Navigation */}
           <div className="flex items-center p-4 h-16">
-            {/* Logo */}
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-green-900 mr-2 flex items-center justify-center"></div>
+            {/* Logo - Now clickable and links to landing page */}
+            <Link href="/landingpage" className="flex items-center cursor-pointer hover:opacity-80 transition-opacity">
+              <div className="w-8 h-8 bg-green-900 mr-2 flex items-center justify-center text-white">
+                CM
+              </div>
               <span className="text-xl text-green-900 font-bold">CityMeet</span>
-            </div>
+            </Link>
             
             {/* Search Bars */}
             <div className="flex ml-16 space-x-4">
