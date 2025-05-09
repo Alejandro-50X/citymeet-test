@@ -9,7 +9,7 @@ body {
     padding: 2rem;
   }
   .top-banner {
-    background-color: #043917; /* Tailwind's green-600 */
+    background-color: #043917; 
     color: white;
     padding: 20px;
     text-align: center;
@@ -107,7 +107,7 @@ body {
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 10px;
-    border: 2px solid #043917; /* Green border */
+    border: 2px solid #043917; 
     border-radius: 4px; 
     background-color: #090909;        
   }
